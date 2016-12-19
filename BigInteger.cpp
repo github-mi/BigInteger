@@ -213,8 +213,7 @@ BigInteger operator*(const BigInteger &lhs, const BigInteger &rhs){
 			}
 			if (carry > 0)
 				prod_temp.number.insert(prod_temp.number.begin(), carry + '0');
-			for (string::size_type j = 0; j != i; ++j)
-				prod_temp.number.push_back('0');
+			prod_temp.number.append(i, '0');
 			prod += prod_temp;
 		}
 		return prod;
