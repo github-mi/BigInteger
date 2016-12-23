@@ -18,6 +18,7 @@ class BigInteger{
 	friend BigInteger operator+(const BigInteger&, const BigInteger&);
 	friend BigInteger operator-(const BigInteger&, const BigInteger&);
 	friend BigInteger operator*(const BigInteger&, const BigInteger&);
+	friend BigInteger operator/(const BigInteger&, const BigInteger&);
 public:
 	BigInteger(const string &str = string("0")); 
 	BigInteger(const char *c): BigInteger(string(c)) { }
@@ -30,7 +31,8 @@ public:
 	BigInteger& operator+=(const BigInteger&);
 	BigInteger& operator-=(const BigInteger&);
 	BigInteger& operator*=(const BigInteger&);
-	BigInteger& abs() {sign = true; return *this;};
+	BigInteger& operator/=(const BigInteger&);
+	BigInteger abs() const;
 private:
 	string number;
 	bool sign;

@@ -199,7 +199,6 @@ BigInteger& BigInteger::operator-=(const BigInteger &rhs){
 BigInteger operator*(const BigInteger &lhs, const BigInteger &rhs){
 	if (lhs.number.size() >= rhs.number.size()) {
 		BigInteger prod;
-		prod.sign = !(lhs.sign ^ rhs.sign);
 		for (string::size_type i = 0; i != rhs.number.size(); ++i) {
 			if (rhs.number[rhs.number.size()-i-1] == '0')
 				continue;
@@ -216,13 +215,42 @@ BigInteger operator*(const BigInteger &lhs, const BigInteger &rhs){
 			prod_temp.number.append(i, '0');
 			prod += prod_temp;
 		}
+		prod.sign = !(lhs.sign ^ rhs.sign);
 		return prod;
 	}
 	else
 		return rhs * lhs;
 }
-//------------------------------  operator **
+//------------------------------  operator *=
 BigInteger& BigInteger::operator*=(const BigInteger &rhs){
 	*this = *this * rhs;
 	return *this;
+}
+//------------------------------  operator /
+BigInteger operator/(const BigInteger &lhs, const BigInteger &rhs){
+	BigInteger lhs_temp = lhs.abs();
+	BigInteger quot;
+	if (lhs.number.size() >= rhs.number.size()) {
+		auto gap = lhs.number.size() - rhs.number.size();
+		for (int i = gap; i != -1; --i) {
+			BigInteger rhs_temp = rhs.abs() * BigInteger("1"+string(i, '0'));
+			while (lhs_temp >= rhs_temp) {
+				lhs_temp -= rhs_temp;
+				quot += BigInteger("1"+string(i, '0'));
+			}
+		}
+	}
+	quot.sign = !(lhs.sign ^ rhs.sign);
+	return quot;
+}
+//------------------------------  operator /=
+BigInteger& BigInteger::operator/=(const BigInteger &rhs){
+	*this = *this / rhs;
+	return *this;
+}
+//------------------------------  operator abs()
+BigInteger BigInteger::abs() const {
+		BigInteger temp = *this;
+		temp.sign = true;
+		return temp;
 }
